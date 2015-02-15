@@ -42,7 +42,6 @@ var controller = Leap.loop({ enableGestures : true}, function(frame) {
             })
             if (swipe && element){
               element = false;
-              console.log("three-swipe")
               pwrite("No!");
             }
           } else if (getExtendedFingers(hand) == 2){
