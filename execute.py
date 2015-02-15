@@ -20,4 +20,4 @@ def play_sound(file):
 res=urllib.URLopener()
 res.retrieve("http://ronaktexttospeechproxy.mybluemix.net/synthesize?download=true&text="+message,"transcript.wav")
 
-play_sound("transcript.wav") 
+# play_sound("transcript.wav") 
