@@ -1,3 +1,4 @@
+
 // Put event listeners into place
 var canvas, context, video, videoObj, image;
 
@@ -56,7 +57,7 @@ $.ajax({
   url: '/translate',
   data: image,
   success: poop(),
-  dataType: String
+  dataType: json
 });
 }
 
