@@ -9,7 +9,7 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
           var previousFrame = controller.frame(1);
           var totalRotation = hand.rotationAngle(previousFrame);
 
-          if (getExtendedFingers(hand) == 5){
+          if (getExtendedFingers(hand) >= 4){
             var swipe = false;
             frame.gestures.forEach(function(gesture){
               if (gesture.type == "swipe"){
@@ -21,17 +21,6 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
               console.log("five-swipe")
               document.getElementById("snap").click();
 
-            }
-          } else if (getExtendedFingers(hand) == 4){
-            var swipe = false;
-            frame.gestures.forEach(function(gesture){
-              if (gesture.type == "swipe"){
-                swipe = true;
-              }
-            })
-            if (swipe && element){
-              element = false;
-              console.log("four-swipe");
             }
           } else if (getExtendedFingers(hand) == 2){
             var swipe = false;

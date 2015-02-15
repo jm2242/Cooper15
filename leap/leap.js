@@ -1,8 +1,6 @@
 var word = document.getElementById("word");
 var element = false;
 
-
-
 var controller = Leap.loop({ enableGestures : true }, function(frame) {
     if (frame.valid && frame.hands.length > 0){
       switch (frame.hands.length){
