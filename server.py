@@ -7,8 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-	return 'Hello World!'
-
+	return '<i>Hello World!</i>'
 @app.route('/translate')
 def translate(imageData):
     imageObj = base64.b64decode(imageData)

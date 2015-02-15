@@ -1,5 +1,5 @@
 // Put event listeners into place
-var canvas, context, video, videoObj;
+var canvas, context, video, videoObj, image;
 
 window.addEventListener("DOMContentLoaded", function() {
   // Grab elements, create settings, etc.
@@ -35,17 +35,35 @@ window.addEventListener("DOMContentLoaded", function() {
 document.getElementById("snap").addEventListener("click", function() {
   
   context.drawImage(video, 0, 0, 640, 480);
-  var image = canvas.toDataURL('image/jpeg', 1.0);
+  image = canvas.toDataURL('image/jpeg', 1.0);
   console.log("Got a pic!!");
+
+});
+
+document.getElementById("send").addEventListener("click", function() {
   console.log(image);
   sendImageToAPI(image);
 });
+
 
 // 'image' should be a encoded image
 function sendImageToAPI(image) {
   // send the image to the API, and do whatcha gotta do after that
   console.log("Sending " + image.length + " bytes to the api");
+
+$.ajax({
+  type: "POST",
+  url: '/translate',
+  data: image,
+  success: success,
+  dataType: Spring
+});
 }
+
+
+
+
+
 
 // function convertCanvasToImage(canvas) {
 //   var image = new Image();
