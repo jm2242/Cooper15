@@ -35,8 +35,8 @@ class AbbyyOnlineSdk:
 	# register at http://cloud.ocrsdk.com/Account/Register
 	# More info on getting your application id and password at
 	# http://ocrsdk.com/documentation/faq/#faq3
-	ApplicationId = "ReadMe.txt"
-	Password = "JoShMR3pU4ax6MMe5ILo4Owm"
+	ApplicationId = "YoreadMe2"
+	Password = "sg29/ePNFiylLos+GC5A/r2n"
 	Proxy = None
 	enableDebugging = 0
 

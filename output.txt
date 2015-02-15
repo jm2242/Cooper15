@@ -1,12 +1,1 @@
-﻿HtCU
-tmtn*
-Welcome to HackCooper! We re super excited to have you with us this weekend at Cooper
-Union s second annual student hackathon. Over the next 24 hours, you can:
-. work on cool projects
-• meet new people
-. listen to amazing tech talks
-. eat lots of free food
-. collect awesome swag
-. demo your hacks
-. win all the prizes
-, ...... ^roatMtrnooer on twitter and sign up for HackCooper on HackerLeague
+﻿

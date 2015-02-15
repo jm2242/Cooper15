@@ -1,6 +1,6 @@
 
 // Put event listeners into place
-var canvas, context, video, videoObj, image, sound;
+var canvas, context, video, videoObj, image, sound, random;
 
 window.addEventListener("DOMContentLoaded", function() {
   // Grab elements, create settings, etc.
@@ -57,11 +57,13 @@ function sendImageToAPI(image) {
 
 }
 
+
+
 function playSound() {
   // sound = new Audio('../transcript.wav');
   // sound.play();
-
-  document.getElementById("dummy").innerHTML = '<audio id = "soundPlay" preload> <source src = "transcript.wav" type ="audio/wav"></source></audio>"';
+  random = Math.random()
+  document.getElementById("dummy").innerHTML = '<audio id = "soundPlay" preload> <source src = "transcript.wav?' + random + '" type ="audio/wav"></source></audio>"';
   // document.getElementById("soundPlay").load();
   document.getElementById("soundPlay").play();
   console.log("yoyoyo");
