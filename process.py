@@ -12,91 +12,83 @@ import sys
 import time
 import urllib2
 import urllib
-import xml.dom.minidom
 
-class ProcessingSettings:
-	Language = "English"
-	OutputFormat = "txt"
+from AbbyyOnlineSdk import *
 
 
-class Task:
-	Status = "Unknown"
-	Id = None
-	DownloadUrl = None
-	def IsActive( self ):
-		if self.Status == "InProgress" or self.Status == "Queued":
-			return True
-		else:
-			return False
+processor = AbbyyOnlineSdk()
 
-class AbbyyOnlineSdk:
-	ServerUrl = "http://cloud.ocrsdk.com/"
-	# To create an application and obtain a password,
-	# register at http://cloud.ocrsdk.com/Account/Register
-	# More info on getting your application id and password at
-	# http://ocrsdk.com/documentation/faq/#faq3
-	ApplicationId = "ReadMe.txt"
-	Password = "JoShMR3pU4ax6MMe5ILo4Owm"
-	Proxy = None
-	enableDebugging = 0
+if "ABBYY_APPID" in os.environ:
+	processor.ApplicationId = os.environ["ABBYY_APPID"]
 
-	def ProcessImage( self, filePath, settings ):
-		urlParams = urllib.urlencode({
-			"language" : settings.Language,
-			"exportFormat" : settings.OutputFormat
-			})
-		requestUrl = self.ServerUrl + "processImage?" + urlParams
+if "ABBYY_PWD" in os.environ:
+	processor.Password = os.environ["ABBYY_PWD"]
 
-		bodyParams = { "file" : open( filePath, "rb" )  }
-		request = urllib2.Request( requestUrl, None, self.buildAuthInfo() )
-		response = self.getOpener().open(request, bodyParams).read()
-		if response.find( '<Error>' ) != -1 :
-			return None
-		# Any response other than HTTP 200 means error - in this case exception will be thrown
-
-		# parse response xml and extract task ID
-		task = self.DecodeResponse( response )
-		return task
-
-	def GetTaskStatus( self, task ):
-		urlParams = urllib.urlencode( { "taskId" : task.Id } )
-		statusUrl = self.ServerUrl + "getTaskStatus?" + urlParams
-		request = urllib2.Request( statusUrl, None, self.buildAuthInfo() )
-		response = self.getOpener().open( request ).read()
-		task = self.DecodeResponse( response )
-		return task
-
-	def DownloadResult( self, task, outputPath ):
-		getResultParams = urllib.urlencode( { "taskId" : task.Id } )
-		getResultUrl = self.ServerUrl + "getResult?" + getResultParams
-		request = urllib2.Request( getResultUrl, None, self.buildAuthInfo() )
-		fileResponse = self.getOpener().open( request ).read()
-		resultFile = open( outputPath, "wb" )
-		resultFile.write( fileResponse )
+# Proxy settings
+if "http_proxy" in os.environ:
+	proxyString = os.environ["http_proxy"]
+	print "Using proxy at %s" % proxyString
+	processor.Proxy = urllib2.ProxyHandler( { "http" : proxyString })
 
 
-	def DecodeResponse( self, xmlResponse ):
-		""" Decode xml response of the server. Return Task object """
-		dom = xml.dom.minidom.parseString( xmlResponse )
-		taskNode = dom.getElementsByTagName( "task" )[0]
-		task = Task()
-		task.Id = taskNode.getAttribute( "id" )
-		task.Status = taskNode.getAttribute( "status" )
-		if task.Status == "Completed":
-			task.DownloadUrl = taskNode.getAttribute( "resultUrl" )
-		return task
+# Recognize a file at filePath and save result to resultFilePath
+def recognizeFile( filePath, resultFilePath, language, outputFormat ):
+	print "Uploading.."
+	settings = ProcessingSettings()
+	settings.Language = language
+	settings.OutputFormat = outputFormat
+	task = processor.ProcessImage( filePath, settings )
+	if task == None:
+		print "Error"
+		return
+	print "Id = %s" % task.Id
+	print "Status = %s" % task.Status
+
+	# Wait for the task to be completed
+	sys.stdout.write( "Waiting.." )
+	# Note: it's recommended that your application waits at least 2 seconds
+	# before making the first getTaskStatus request and also between such requests
+	# for the same task. Making requests more often will not improve your
+	# application performance.
+	# Note: if your application queues several files and waits for them
+	# it's recommended that you use listFinishedTasks instead (which is described
+	# at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
+
+	while task.IsActive() == True :
+		time.sleep( 5 )
+		sys.stdout.write( "." )
+		task = processor.GetTaskStatus( task )
+
+	print "Status = %s" % task.Status
+
+	if task.Status == "Completed":
+		if task.DownloadUrl != None:
+			processor.DownloadResult( task, resultFilePath )
+			print "Result was written to %s" % resultFilePath
+	else:
+		print "Error processing task"
 
 
-	def buildAuthInfo( self ):
-		return { "Authorization" : "Basic %s" % base64.encodestring( "%s:%s" % (self.ApplicationId, self.Password) ) }
 
-	def getOpener( self ):
-		if self.Proxy == None:
-			self.opener = urllib2.build_opener( MultipartPostHandler.MultipartPostHandler,
-			urllib2.HTTPHandler(debuglevel=self.enableDebugging))
-		else:
-			self.opener = urllib2.build_opener( 
-				self.Proxy, 
-				MultipartPostHandler.MultipartPostHandler,
-				urllib2.HTTPHandler(debuglevel=self.enableDebugging))
-		return self.opener
+
+parser = argparse.ArgumentParser( description="Recognize a file via web service" )
+parser.add_argument( 'sourceFile' )
+parser.add_argument( 'targetFile' )
+
+parser.add_argument( '-l', '--language', default='English', help='Recognition language (default: %(default))' )
+group = parser.add_mutually_exclusive_group()
+group.add_argument( '-txt', action='store_const', const='txt', dest='format', default='txt' )
+group.add_argument( '-pdf', action='store_const', const='pdfSearchable', dest='format' )
+group.add_argument( '-rtf', action='store_const', const='rtf', dest='format' )
+group.add_argument( '-docx', action='store_const', const='docx', dest='format' )
+group.add_argument( '-xml', action='store_const', const='xml', dest='format' )
+
+args = parser.parse_args()
+
+sourceFile = args.sourceFile
+targetFile = args.targetFile
+language = args.language
+outputFormat = args.format
+
+if os.path.isfile( sourceFile ):
+	recognizeFile( sourceFile, targetFile, language, outputFormat )

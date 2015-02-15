@@ -1,6 +1,6 @@
 
 // Put event listeners into place
-var canvas, context, video, videoObj, image;
+var canvas, context, video, videoObj, image, sound;
 
 window.addEventListener("DOMContentLoaded", function() {
   // Grab elements, create settings, etc.
@@ -56,8 +56,13 @@ function sendImageToAPI(image) {
 
 }
 
-function poop() {
-  console.log("poop^2")
+function playSound() {
+  sound = new Audio('transcript.wav');
+  sound.play();
+}
+
+function transcriptFail() {
+  console.log("failed to transcribe");
 }
 
 function post(image) {
@@ -66,8 +71,8 @@ function post(image) {
     url: '../translate',
     contentType: 'application/json; charset=utf-8',
     data: image,
-    success: poop,
-    error: poop,
+    success: transcriptFail,
+    error: transcriptFail,
     dataType: 'json'
   });
 }
