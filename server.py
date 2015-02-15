@@ -5,11 +5,12 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-	return 'Hello World!'
-
+	return '<i>Hello World!</i>'
 @app.route('/translate')
-def translate():
-	return 'translate!'
+def translate(imageData):
+	print("YOYOMA")
+	return str(imageData)
+
 
 port = os.getenv('VCAP_APP_PORT', '5000')
 if __name__ == "__main__":
