@@ -1,9 +1,6 @@
 applications:
-- disk_quota: 1024M
+- name: readme-dot-text
   buildpack: python_buildpack
-  host: readme-dot-text
-  name: readme-dot-text
+  command: python server.py
   path: .
-  domain: mybluemix.net
-  instances: 1
   memory: 128M

@@ -1,21 +1,16 @@
 import os
-try:
-  from SimpleHTTPServer import SimpleHTTPRequestHandler as Handler
-  from SocketServer import TCPServer as Server
-except ImportError:
-  from http.server import SimpleHTTPRequestHandler as Handler
-  from http.server import HTTPServer as Server
+from flask import Flask
 
-# Read port selected by the cloud for our application
-PORT = int(os.getenv('VCAP_APP_PORT', 8000))
-# Change current directory to avoid exposure of control files
-os.chdir('static')
+app = Flask(__name__)
 
-httpd = Server(("", PORT), Handler)
-try:
-  print("Start serving at port %i" % PORT)
-  httpd.serve_forever()
-except KeyboardInterrupt:
-  pass
-httpd.server_close()
+@app.route('/')
+def hello():
+	return 'Hello World!'
 
+@app.route('/translate')
+def translate():
+	return 'translate!'
+
+port = os.getenv('VCAP_APP_PORT', '5000')
+if __name__ == "__main__":
+	app.run(host='0.0.0.0', port=int(port))
