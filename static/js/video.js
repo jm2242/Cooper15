@@ -46,7 +46,12 @@ document.getElementById("snap").addEventListener("click", function() {
 
 document.getElementById("send").addEventListener("click", function() {
   console.log(image);
+
+  document.getElementById("pop-audio").play();
+  console.log("PLAY POP");
+
   sendImageToAPI(image);
+
 });
 
 

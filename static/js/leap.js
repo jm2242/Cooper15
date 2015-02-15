@@ -20,7 +20,7 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
               element = false;
               console.log("five-swipe")
               document.getElementById("snap").click();
-              
+
             }
           } else if (getExtendedFingers(hand) == 4){
             var swipe = false;
@@ -93,6 +93,7 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
             if (!element){
               element = true;
               console.log("circle");
+              document.getElementById("circle-audio").play();
             }
           }
           break;
