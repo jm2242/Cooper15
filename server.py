@@ -34,6 +34,9 @@ def translate():
 	p.wait()
 	print "subprocess done"
 
+    p = subprocess.Popen("Python ./execute.py", shell = True)
+    p.wait()
+
 	out_text = open('./output.txt', 'r')
 	print out_text.readlines()
 	return "Yeah!"
