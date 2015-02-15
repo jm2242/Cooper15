@@ -1,3 +1,4 @@
+
 // Put event listeners into place
 var canvas, context, video, videoObj, image;
 
@@ -51,6 +52,7 @@ function sendImageToAPI(image) {
   // send the image to the API, and do whatcha gotta do after that
   console.log("Sending " + image.length + " bytes to the api");
   post(image);
+
 
 }
 
