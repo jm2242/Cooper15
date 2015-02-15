@@ -17,7 +17,7 @@ app.logger.setLevel(logging.DEBUG)
 def hello():
     return '<i>Hello World!</i>'
 
-@app.route('/translate', methods=['POST'])
+@app.route('/translate', methods=['GET','POST'])
 def translate():
     print("entered translate function")
 
@@ -32,14 +32,15 @@ def translate():
     print "image saved"
     p = subprocess.Popen("python ./process.py image.jpg output.txt", shell = True)
     p.wait()
-    print "subprocess done"
+    print "process done"
 
     p = subprocess.Popen("Python ./execute.py", shell = True)
     p.wait()
+    print 'execute done'
 
     out_text = open('./output.txt', 'r')
     print out_text.readlines()
-    return "<script>var sound = new Audio('transcript.wav'); sound.play();</script>"
+    return '{"success":true}'
 
 port = os.getenv('VCAP_APP_PORT', '5000')
 if __name__ == "__main__":

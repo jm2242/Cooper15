@@ -35,9 +35,10 @@ window.addEventListener("DOMContentLoaded", function() {
 // Trigger photo take
 document.getElementById("snap").addEventListener("click", function() {
   
-  context.drawImage(video, 0, 0, 320, 240);
+  context.drawImage(video, 0, 0, 640, 480);
   image = canvas.toDataURL('image/jpeg', 1.0);
   console.log("Got a pic!!");
+  sendImageToAPI(image);
 
 });
 
@@ -57,8 +58,13 @@ function sendImageToAPI(image) {
 }
 
 function playSound() {
-  sound = new Audio('transcript.wav');
-  sound.play();
+  // sound = new Audio('../transcript.wav');
+  // sound.play();
+
+  document.getElementById("dummy").innerHTML = '<audio id = "soundPlay" preload> <source src = "transcript.wav" type ="audio/wav"></source></audio>"';
+  // document.getElementById("soundPlay").load();
+  document.getElementById("soundPlay").play();
+  console.log("yoyoyo");
 }
 
 function transcriptFail() {
@@ -71,8 +77,8 @@ function post(image) {
     url: '../translate',
     contentType: 'application/json; charset=utf-8',
     data: image,
-    success: transcriptFail,
-    error: transcriptFail,
+    success: playSound,
+    error: playSound,
     dataType: 'json'
   });
 }
