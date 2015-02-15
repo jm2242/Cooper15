@@ -46,7 +46,7 @@ document.getElementById("snap").addEventListener("click", function() {
 });
 
 document.getElementById("send").addEventListener("click", function() {
-  console.log(image);
+  //console.log(image);
 
   document.getElementById("pop-audio").play();
   console.log("PLAY POP");
@@ -67,11 +67,12 @@ function sendImageToAPI(image) {
 
 
 
-function playSound() {
+function playSound(_sound) {
+  console.log(_sound)
   // sound = new Audio('../transcript.wav');
   // sound.play();
   random = Math.random()
-  document.getElementById("dummy").innerHTML = '<audio id = "soundPlay" preload> <source src = "transcript.wav?' + random + '" type ="audio/wav"></source></audio>"';
+  document.getElementById("dummy").innerHTML = '<audio id = "soundPlay" preload> <source src = "/static/'+_sound.success+'" type ="audio/wav"></source></audio>"';
   // document.getElementById("soundPlay").load();
   document.getElementById("soundPlay").play();
   console.log("yoyoyo");

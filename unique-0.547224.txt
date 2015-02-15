@@ -1,0 +1,4 @@
+﻿Hello, my name is Angeilo. I
+have trouble seeing. This app
+takes a picture of text and
+converts it into speech.

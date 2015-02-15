@@ -6,7 +6,7 @@ import subprocess
 import logging
 import sys
 from pprint import pprint
-
+import random
 
 app = Flask(__name__)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -21,37 +21,38 @@ def hello():
 def translate():
     print("entered translate function")
 
-    fh = open("image.jpg", "wb")
+    unique = 'unique-%f' % random.random()
+
+    fh = open(unique + '.jpg', "wb")
     imageData = request.data[23:]
-    print imageData
+    # print imageData
     fh.write(imageData.decode('base64'))
     fh.close()
-    # imageObj.save('./image.jpg')
 
     print "image saved"
-    p = subprocess.Popen("python ./process.py image.jpg output.txt", shell = True)
+    p = subprocess.Popen("python ./process.py "+unique+".jpg "+unique+".txt", shell = True)
     p.wait()
     print "process done"
 
-    p = subprocess.Popen("python ./execute.py", shell = True)
+    p = subprocess.Popen("python ./execute.py "+unique, shell = True)
     p.wait()
     print 'execute done'
-    return '{"success":true}'
+    return '{"success":"'+unique+'.wav"}'
 
-@app.route('/pwrite', methods=['GET','POST'])
-def pwrite():
-    fh = open("output.txt", "wb");
-    text = request.data;
-    print(text);
-    fh.write(text);
-    fh.close()
+# @app.route('/pwrite', methods=['GET','POST'])
+# def pwrite():
+#     fh = open("output.txt", "wb");
+#     text = request.data;
+#     print(text);
+#     fh.write(text);
+#     fh.close()
 
-    p = subprocess.Popen("python ./execute.py", shell = True)
-    p.wait()
+#     p = subprocess.Popen("python ./execute.py", shell = True)
+#     p.wait()
 
-    out_text = open('./output.txt', 'r')
-    print out_text.readlines()
-    return '{"success":true}'
+#     out_text = open('./output.txt', 'r')
+#     print out_text.readlines()
+#     return '{"success":true}'
 
 port = os.getenv('VCAP_APP_PORT', '5000')
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 import wave,sys,urllib
 
-f = open('output.txt', 'r')
+f = open(sys.argv[1]+".txt", 'r')
 message = str(f.readlines()).decode('unicode_escape').encode('ascii','ignore')
 
 #
@@ -18,7 +18,7 @@ message = str(f.readlines()).decode('unicode_escape').encode('ascii','ignore')
 #
 
 res=urllib.URLopener()
-res.retrieve("http://ronaktexttospeechproxy.mybluemix.net/synthesize?download=true&text="+message,"static/transcript.wav")
+res.retrieve("http://ronaktexttospeechproxy.mybluemix.net/synthesize?download=true&text="+message,"static/"+sys.argv[1]+".wav")
 
 
 # play_sound("transcript.wav") 
