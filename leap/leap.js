@@ -1,6 +1,6 @@
 var word = document.getElementById("word");
 var current;
-var element;
+var element = false;;
 const minValue = 0.5;
 
 var controller = Leap.loop({ enableGestures : true }, function(frame) {
@@ -16,46 +16,104 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
   //     processHand(hand);
   //   })
   // }
-  if (frame.hands.length > 0){
-    frame.hands.forEach(function(hand){
-      if (getExtendedFingers(hand) == 1){
-        var extendedFinger = findExtendedFinger(hand);
-        if (extendedFinger.type == 0 && element != "thumb"){
-          element = "thumb";
-          console.log("thumb");
-        } else if (extendedFinger.type == 1 && element != "index"){
-          element = "index";
-          console.log("index");
-        } else if (extendedFinger.type == 2 && element != "middle"){
-          element = "middle";
-          console.log("middle")
-        } else if (extendedFinger.type == 3 && element != "ring"){
-          element = "ring";
-          console.log("ring");
-        } else if (extendedFinger.type == 4 && element != "pinky"){
-          element = "pinky";
-          console.log("pinky");
-        }
-      } else if (getExtendedFingers(hand) == 2){
-        
+    if (frame.valid && frame.hands.length > 0){
+      switch (frame.hands.length){
+        case 1:
+          var hand = frame.hands[0];
+          var previousFrame = controller.frame(1);
+          var totalRotation = hand.rotationAngle(previousFrame);
+
+          if (getExtendedFingers(hand) == 5){
+            var swipe = false;
+            frame.gestures.forEach(function(gesture){
+              if (gesture.type == "swipe"){
+                swipe = true;
+              }
+            })
+            if (swipe && element){
+              element = false;
+              console.log("five-swipe");
+            }
+          } else if (getExtendedFingers(hand) == 4){
+            var swipe = false;
+            frame.gestures.forEach(function(gesture){
+              if (gesture.type == "swipe"){
+                swipe = true;
+              }
+            })
+            if (swipe && element){
+              element = false;
+              console.log("four-swipe");
+            }
+          } else if (getExtendedFingers(hand) == 2){
+            var swipe = false;
+            frame.gestures.forEach(function(gesture){
+              if (gesture.type == "swipe"){
+                swipe = true;
+              }
+            })
+            var extendedFingers = findExtendedFingers(hand);
+            if (swipe && element){
+              if (extendedFingers.indexOf(0) != -1 && extendedFingers.indexOf(4) != -1){
+                  element = false;
+                  console.log("thumb-pinky");
+              } else if (extendedFingers.indexOf(0) != -1 && extendedFingers.indexOf(1) != -1){
+                  element = false;
+                  console.log("thumb-index")
+              } else if (extendedFingers.indexOf(1) != -1 && extendedFingers.indexOf(2) != -1){
+                  element = false;
+                  console.log("index-middle")
+              } else if (extendedFingers.indexOf(0) != -1 && extendedFingers.indexOf(1) != -1) {
+                  element = false;
+                  console.log("index-")
+              }
+            }
+          } else if (getExtendedFingers(hand) == 1){
+            var swipe = false;
+            frame.gestures.forEach(function(gesture){
+              if (gesture.type == "swipe"){
+                swipe = true;
+              }
+            })
+            var extendedFinger = findExtendedFinger(hand);
+            if (element && swipe) {
+                if (extendedFinger.type == 0){
+                element = false;
+                console.log("thumb");
+              } else if (extendedFinger.type == 1){
+                element = false;
+                console.log("index");
+              } else if (extendedFinger.type == 2){
+                element = false;
+                console.log("middle")
+              } else if (extendedFinger.type == 3){
+                element = false;
+                console.log("ring");
+              } else if (extendedFinger.type == 4){
+                element = false;
+                console.log("pinky");
+              }
+            }
+          } else if (getExtendedFingers(hand) == 0){
+            // var circle = false;
+            // frame.gestures.forEach(function(gesture){
+            //   if (gesture.type == "circle"){
+            //     circle = true;
+            //   }
+            // })
+            if (!element){
+              element = true;
+              console.log("circle");
+            }
+          }
+          break;
+        case 2:
+          var hand1 = frame.hands[0];
+          var hand2 = frame.hands[1];
+          break;
       }
-    })
-  }
-
-});
-
-
-function processHand(hand){
-  if (checkFist(hand) != isFist) {
-    isFist = checkFist(hand);
-    if (checkFist(hand)){
-      console.log("fist");
     }
-  } else if(hand.pinchStrength > 0){
-    var pinchingFinger = findPinchingFingerType(hand);
-    console.log(pinchingFinger.type);
-  }
-}
+});
 
 function getExtendedFingers(hand){
    var f = 0;
@@ -82,59 +140,17 @@ function findExtendedFinger(hand){
   }
 }
 
-function findTwoExtendedFingers(hand){
-  var extendedFinger;
-  var e = 0;
+function findExtendedFingers(hand){
+  var extendedFingers = [];
   var f = 0;
   for (var i = 0; i < hand.fingers.length; i++){
     var finger = hand.fingers[i];
     if (finger.extended){
       f++;
-      extendedFinger = finger;
+      extendedFingers.push(finger.type);
     }
   }
-  if (f == 2){
-
-    return extendedFinger;
-  }
-}
-
-function checkFist(hand){
-   var sum = 0;
-   for(var i=0;i<hand.fingers.length;i++){
-      var finger = hand.fingers[i];
-      var meta = finger.bones[0].direction();
-      var proxi = finger.bones[1].direction();
-      var inter = finger.bones[2].direction();
-      var dMetaProxi = Leap.vec3.dot(meta,proxi);
-      var dProxiInter = Leap.vec3.dot(proxi,inter);
-      sum += dMetaProxi;
-      sum += dProxiInter
-   }
-   sum = sum/10;
-
-   if(sum<=minValue && getExtendedFingers(hand)==0){
-       return true;
-   }else{
-       return false;
-   }
-}
-
-
-function findPinchingFingerType(hand){
-    var pincher;
-    var closest = 500;
-    for(var f = 1; f < 5; f++)
-    {
-        current = hand.fingers[f];
-        distance = Leap.vec3.distance(hand.thumb.tipPosition, current.tipPosition);
-        if(current != hand.thumb && distance < closest)
-        {
-            closest = distance;
-            pincher = current;
-        }
-    }
-    return pincher;
+    return extendedFingers;
 }
 
 function generateRandomColor() {
@@ -143,21 +159,6 @@ function generateRandomColor() {
     for (var i = 0; i < 6; i++)
         color += letters[Math.floor(Math.random() * 6)];
     return color;
-}
-
-function processGesture(gesture) {
-    word.innerHTML = gesture.type;
-    switch (gesture.type) {
-        case "circle":
-            document.body.style.backgroundColor = "#999";
-            console.log("circle");
-            console.log(gesture.id);
-            break;
-        case "swipe":
-            document.body.style.backgroundColor = generateRandomColor();
-            checkSwipe(gesture);
-            break;
-    }
 }
 
 function checkSwipe(gesture){
