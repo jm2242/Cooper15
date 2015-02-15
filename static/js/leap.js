@@ -1,7 +1,5 @@
 var word = document.getElementById("word");
-var element = false;
-
-
+var element = false;;
 
 var controller = Leap.loop({ enableGestures : true }, function(frame) {
     if (frame.valid && frame.hands.length > 0){
@@ -20,7 +18,8 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
             })
             if (swipe && element){
               element = false;
-              console.log("five-swipe");
+              console.log("five-swipe")
+              document.getElementById("snap").click();
             }
           } else if (getExtendedFingers(hand) == 4){
             var swipe = false;
@@ -70,6 +69,7 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
                 console.log("thumb");
               } else if (extendedFinger.type == 1){
                 element = false;
+                document.getElementById("send").click();
                 console.log("index");
               } else if (extendedFinger.type == 2){
                 element = false;
