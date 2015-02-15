@@ -20,6 +20,8 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
               element = false;
               console.log("five-swipe")
               document.getElementById("snap").click();
+              document.getElementById("snap-audio").play();
+              console.log("PLAY");
             }
           } else if (getExtendedFingers(hand) == 4){
             var swipe = false;
