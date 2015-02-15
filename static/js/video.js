@@ -35,7 +35,7 @@ window.addEventListener("DOMContentLoaded", function() {
 // Trigger photo take
 document.getElementById("snap").addEventListener("click", function() {
   
-  context.drawImage(video, 0, 0, 320, 240);
+  context.drawImage(video, 0, 0, 640, 480);
   image = canvas.toDataURL('image/jpeg', 1.0);
   console.log("Got a pic!!");
 

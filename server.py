@@ -30,13 +30,13 @@ def translate():
 	# imageObj.save('./image.jpg')
 
 	print "image saved"
-	p = subprocess.Popen("python process.py image.jpg output.txt")
+	p = subprocess.Popen("python ./process.py image.jpg output.txt", shell = True)
 	p.wait()
 	print "subprocess done"
 
 	out_text = open('./output.txt', 'r')
-	return out_text.readlines()
-	
+	print out_text.readlines()
+	return "Yeah!"
 
 port = os.getenv('VCAP_APP_PORT', '5000')
 if __name__ == "__main__":
