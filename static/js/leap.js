@@ -1,7 +1,7 @@
 var word = document.getElementById("word");
 var element = false;;
 
-var controller = Leap.loop({ enableGestures : true }, function(frame) {
+var controller = Leap.loop({ enableGestures : true, optimizeHMD : true }, function(frame) {
     if (frame.valid && frame.hands.length > 0){
       switch (frame.hands.length){
         case 1:
@@ -42,6 +42,7 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
               } else if (extendedFingers.indexOf(1) != -1 && extendedFingers.indexOf(2) != -1){
                   element = false;
                   console.log("index-middle")
+                  pwrite("Will you be my valentine?");
               }
             }
           } else if (getExtendedFingers(hand) == 1){
@@ -72,6 +73,7 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
               } else if (extendedFinger.type == 4){
                 element = false;
                 console.log("pinky");
+                pwrite("")
               }
             }
           } else if (getExtendedFingers(hand) == 0){

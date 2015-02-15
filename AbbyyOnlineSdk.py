@@ -35,8 +35,8 @@ class AbbyyOnlineSdk:
 	# register at http://cloud.ocrsdk.com/Account/Register
 	# More info on getting your application id and password at
 	# http://ocrsdk.com/documentation/faq/#faq3
-	ApplicationId = "YoreadMe2"
-	Password = "sg29/ePNFiylLos+GC5A/r2n"
+	ApplicationId = "yutaarai"
+	Password = "/wxivyFVI4Bp0jL+4GO65T2+"
 	Proxy = None
 	enableDebugging = 0
 
@@ -95,8 +95,8 @@ class AbbyyOnlineSdk:
 			self.opener = urllib2.build_opener( MultipartPostHandler.MultipartPostHandler,
 			urllib2.HTTPHandler(debuglevel=self.enableDebugging))
 		else:
-			self.opener = urllib2.build_opener( 
-				self.Proxy, 
+			self.opener = urllib2.build_opener(
+				self.Proxy,
 				MultipartPostHandler.MultipartPostHandler,
 				urllib2.HTTPHandler(debuglevel=self.enableDebugging))
 		return self.opener
