@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", function() {
     video = document.getElementById("video");
     videoObj = { "video": true };
     errBack = function(error) {
-      console.log("Video capture error: ", error.code); 
+      console.log("Video capture error: ", error.code);
     };
 
   // Put video listeners into place
@@ -34,7 +34,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
 // Trigger photo take
 document.getElementById("snap").addEventListener("click", function() {
-  
+
   context.drawImage(video, 0, 0, 640, 480);
   image = canvas.toDataURL('image/jpeg', 1.0);
   console.log("Got a pic!!");
@@ -87,6 +87,18 @@ function post(image) {
     url: '../translate',
     contentType: 'application/json; charset=utf-8',
     data: image,
+    success: playSound,
+    error: playSound,
+    dataType: 'json'
+  });
+}
+
+function pwrite(text) {
+  $.ajax({
+    type: 'POST',
+    url: '../pwrite',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify(text),
     success: playSound,
     error: playSound,
     dataType: 'json'

@@ -17,12 +17,12 @@ app.logger.setLevel(logging.DEBUG)
 def hello():
     return '<i>Hello World!</i>'
 
+
 @app.route('/translate', methods=['GET','POST'])
 def translate():
     print("entered translate function")
 
     fh = open("image.jpg", "wb")
-    
     imageData = request.data[23:]
     print imageData
     fh.write(imageData.decode('base64'))
@@ -34,9 +34,21 @@ def translate():
     p.wait()
     print "process done"
 
-    p = subprocess.Popen("Python ./execute.py", shell = True)
+    p = subprocess.Popen("python ./execute.py", shell = True)
     p.wait()
     print 'execute done'
+    return '{"success":true}'
+
+@app.route('/pwrite', methods=['GET','POST'])
+def pwrite():
+    fh = open("output.txt", "wb");
+    text = request.data;
+    print(text);
+    fh.write(text);
+    fh.close()
+
+    p = subprocess.Popen("python ./execute.py", shell = True)
+    p.wait()
 
     out_text = open('./output.txt', 'r')
     print out_text.readlines()

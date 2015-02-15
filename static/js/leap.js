@@ -34,15 +34,14 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
               if (extendedFingers.indexOf(0) != -1 && extendedFingers.indexOf(4) != -1){
                   element = false;
                   console.log("thumb-pinky");
+                  pwrite("How's it going?");
               } else if (extendedFingers.indexOf(0) != -1 && extendedFingers.indexOf(1) != -1){
                   element = false;
                   console.log("thumb-index")
+                  pwrite("I am doing well, how are you?");
               } else if (extendedFingers.indexOf(1) != -1 && extendedFingers.indexOf(2) != -1){
                   element = false;
                   console.log("index-middle")
-              } else if (extendedFingers.indexOf(0) != -1 && extendedFingers.indexOf(1) != -1) {
-                  element = false;
-                  console.log("index-")
               }
             }
           } else if (getExtendedFingers(hand) == 1){
@@ -57,13 +56,16 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
                 if (extendedFinger.type == 0){
                 element = false;
                 console.log("thumb");
+                pwrite("Sure!");
               } else if (extendedFinger.type == 1){
                 element = false;
-                document.getElementById("send").click();
+                // document.getElementById("send").click();
                 console.log("index");
+                pwrite("I am doing great!");
               } else if (extendedFinger.type == 2){
                 element = false;
                 console.log("middle")
+                pwrite("Bye bye");
               } else if (extendedFinger.type == 3){
                 element = false;
                 console.log("ring");
@@ -132,9 +134,8 @@ function findExtendedFingers(hand){
     return extendedFingers;
 }
 
-function generateRandomColor() {
-    var letters = "789EDF";
-    var color = "#";
+function generateRandomResponse() {
+
     for (var i = 0; i < 6; i++)
         color += letters[Math.floor(Math.random() * 6)];
     return color;
