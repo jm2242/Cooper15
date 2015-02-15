@@ -39,7 +39,7 @@ def translate():
 
     out_text = open('./output.txt', 'r')
     print out_text.readlines()
-    return "Yeah!"
+    return "<script>var sound = new Audio('transcript.wav'); sound.play();</script>"
 
 port = os.getenv('VCAP_APP_PORT', '5000')
 if __name__ == "__main__":

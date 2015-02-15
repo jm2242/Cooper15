@@ -71,7 +71,7 @@ function post(image) {
     url: '../translate',
     contentType: 'application/json; charset=utf-8',
     data: image,
-    success: playSound,
+    success: transcriptFail,
     error: transcriptFail,
     dataType: 'json'
   });
