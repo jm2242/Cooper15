@@ -1,5 +1,5 @@
 var word = document.getElementById("word");
-var element = false;
+var element = false;;
 
 var controller = Leap.loop({ enableGestures : true }, function(frame) {
     if (frame.valid && frame.hands.length > 0){
@@ -9,7 +9,7 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
           var previousFrame = controller.frame(1);
           var totalRotation = hand.rotationAngle(previousFrame);
 
-          if (getExtendedFingers(hand) == 5){
+          if (getExtendedFingers(hand) >= 4){
             var swipe = false;
             frame.gestures.forEach(function(gesture){
               if (gesture.type == "swipe"){
@@ -18,18 +18,9 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
             })
             if (swipe && element){
               element = false;
-              console.log("five-swipe");
-            }
-          } else if (getExtendedFingers(hand) == 4){
-            var swipe = false;
-            frame.gestures.forEach(function(gesture){
-              if (gesture.type == "swipe"){
-                swipe = true;
-              }
-            })
-            if (swipe && element){
-              element = false;
-              console.log("four-swipe");
+              console.log("five-swipe")
+              document.getElementById("snap").click();
+
             }
           } else if (getExtendedFingers(hand) == 2){
             var swipe = false;
@@ -68,6 +59,7 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
                 console.log("thumb");
               } else if (extendedFinger.type == 1){
                 element = false;
+                document.getElementById("send").click();
                 console.log("index");
               } else if (extendedFinger.type == 2){
                 element = false;
@@ -90,6 +82,7 @@ var controller = Leap.loop({ enableGestures : true }, function(frame) {
             if (!element){
               element = true;
               console.log("circle");
+              document.getElementById("circle-audio").play();
             }
           }
           break;

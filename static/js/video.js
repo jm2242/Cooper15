@@ -40,11 +40,19 @@ document.getElementById("snap").addEventListener("click", function() {
   console.log("Got a pic!!");
   sendImageToAPI(image);
 
+  document.getElementById("snap-audio").play();
+  console.log("PLAY");
+
 });
 
 document.getElementById("send").addEventListener("click", function() {
   console.log(image);
+
+  document.getElementById("pop-audio").play();
+  console.log("PLAY POP");
+
   sendImageToAPI(image);
+
 });
 
 
