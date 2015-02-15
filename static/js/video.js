@@ -39,6 +39,9 @@ document.getElementById("snap").addEventListener("click", function() {
   image = canvas.toDataURL('image/jpeg', 1.0);
   console.log("Got a pic!!");
 
+  document.getElementById("snap-audio").play();
+  console.log("PLAY");
+
 });
 
 document.getElementById("send").addEventListener("click", function() {
