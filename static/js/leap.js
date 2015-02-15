@@ -20,7 +20,6 @@ var controller = Leap.loop({ enableGestures : true}, function(frame) {
               element = false;
               console.log("five-swipe")
               document.getElementById("snap").click();
-
             }
           } else if (getExtendedFingers(hand) == 4){
             var swipe = false;
@@ -34,7 +33,7 @@ var controller = Leap.loop({ enableGestures : true}, function(frame) {
               console.log("four-swipe")
               pwrite("Hello friend, how are you doing?");
             }
-          } else if (getExtendedFingers(hand) > 5){
+          } else if (getExtendedFingers(hand) == 3){
             var swipe = false;
             frame.gestures.forEach(function(gesture){
               if (gesture.type == "swipe"){
