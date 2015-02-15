@@ -51,18 +51,25 @@ document.getElementById("send").addEventListener("click", function() {
 function sendImageToAPI(image) {
   // send the image to the API, and do whatcha gotta do after that
   console.log("Sending " + image.length + " bytes to the api");
+  post(image);
 
-$.ajax({
-  type: 'POST',
-  url: '/translate',
-  data: image,
-  success: poop(),
-  dataType: json
-});
+
 }
 
 function poop() {
   console.log("poop^2")
+}
+
+function post(image) {
+  $.ajax({
+    type: 'POST',
+    url: '../translate',
+    contentType: 'application/json; charset=utf-8',
+    data: image,
+    success: poop,
+    error: poop,
+    dataType: 'json'
+  });
 }
 
 
