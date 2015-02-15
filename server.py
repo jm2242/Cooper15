@@ -8,12 +8,12 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
 	return '<i>Hello World!</i>'
-@app.route('/translate')
+@app.route('/translate', methods = ['GET', 'POST'])
 def translate(imageData):
-    imageObj = base64.b64decode(imageData)
-    imageObj.save('./image.jpg')
-    subprocess.call("python process.py image.jpg")
-    out_text = open('./output.txt', 'r')
+   	imageObj = base64.b64decode(imageData)
+	imageObj.save('./image.jpg')
+	subprocess.call("python process.py image.jpg")
+	out_text = open('./output.txt', 'r')
 	return out_text.readlines()
 
 port = os.getenv('VCAP_APP_PORT', '5000')

@@ -34,7 +34,7 @@ window.addEventListener("DOMContentLoaded", function() {
 // Trigger photo take
 document.getElementById("snap").addEventListener("click", function() {
   
-  context.drawImage(video, 0, 0, 640, 480);
+  context.drawImage(video, 0, 0, 320, 240);
   image = canvas.toDataURL('image/jpeg', 1.0);
   console.log("Got a pic!!");
 
@@ -52,15 +52,17 @@ function sendImageToAPI(image) {
   console.log("Sending " + image.length + " bytes to the api");
 
 $.ajax({
-  type: "POST",
+  type: 'POST',
   url: '/translate',
   data: image,
-  success: success,
-  dataType: Spring
+  success: poop(),
+  dataType: String
 });
 }
 
-
+function poop() {
+  console.log("poop^2")
+}
 
 
 
