@@ -34,11 +34,11 @@ var controller = Leap.loop({ enableGestures : true, optimizeHMD : true }, functi
               if (extendedFingers.indexOf(0) != -1 && extendedFingers.indexOf(4) != -1){
                   element = false;
                   console.log("thumb-pinky");
-                  pwrite("How's it going?");
+                  pwrite("Hello, how are you?");
               } else if (extendedFingers.indexOf(0) != -1 && extendedFingers.indexOf(1) != -1){
                   element = false;
                   console.log("thumb-index")
-                  pwrite("I am doing well, how are you?");
+                  pwrite("I am doing well, and you?");
               } else if (extendedFingers.indexOf(1) != -1 && extendedFingers.indexOf(2) != -1){
                   element = false;
                   console.log("index-middle")
@@ -73,20 +73,23 @@ var controller = Leap.loop({ enableGestures : true, optimizeHMD : true }, functi
               } else if (extendedFinger.type == 4){
                 element = false;
                 console.log("pinky");
-                pwrite("")
               }
             }
           } else if (getExtendedFingers(hand) == 0){
-            // var circle = false;
-            // frame.gestures.forEach(function(gesture){
-            //   if (gesture.type == "circle"){
-            //     circle = true;
-            //   }
-            // })
+            var swipe = false;
+            frame.gestures.forEach(function(gesture){
+              if (gesture.type == "swipe"){
+                swipe = true;
+              }
+            })
             if (!element){
+              if (swipe) {
+                stop();
+              } else {
               element = true;
               console.log("circle");
               document.getElementById("circle-audio").play();
+            }
             }
           }
           break;

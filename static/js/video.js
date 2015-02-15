@@ -81,6 +81,10 @@ function transcriptFail() {
   console.log("failed to transcribe");
 }
 
+function stop() {
+  document.getElementById("soundPlay").pause();
+}
+
 function post(image) {
   $.ajax({
     type: 'POST',
