@@ -1,7 +1,7 @@
 var word = document.getElementById("word");
 var element = false;;
 
-var controller = Leap.loop({ enableGestures : true, optimizeHMD : true }, function(frame) {
+var controller = Leap.loop({ enableGestures : true}, function(frame) {
     if (frame.valid && frame.hands.length > 0){
       switch (frame.hands.length){
         case 1:
@@ -9,7 +9,7 @@ var controller = Leap.loop({ enableGestures : true, optimizeHMD : true }, functi
           var previousFrame = controller.frame(1);
           var totalRotation = hand.rotationAngle(previousFrame);
 
-          if (getExtendedFingers(hand) >= 4){
+          if (getExtendedFingers(hand) == 5){
             var swipe = false;
             frame.gestures.forEach(function(gesture){
               if (gesture.type == "swipe"){
@@ -21,6 +21,30 @@ var controller = Leap.loop({ enableGestures : true, optimizeHMD : true }, functi
               console.log("five-swipe")
               document.getElementById("snap").click();
 
+            }
+          } else if (getExtendedFingers(hand) == 4){
+            var swipe = false;
+            frame.gestures.forEach(function(gesture){
+              if (gesture.type == "swipe"){
+                swipe = true;
+              }
+            })
+            if (swipe && element){
+              element = false;
+              console.log("four-swipe")
+              pwrite("Hello friend, how are you doing?");
+            }
+          } else if (getExtendedFingers(hand) > 5){
+            var swipe = false;
+            frame.gestures.forEach(function(gesture){
+              if (gesture.type == "swipe"){
+                swipe = true;
+              }
+            })
+            if (swipe && element){
+              element = false;
+              console.log("three-swipe")
+              pwrite("No!");
             }
           } else if (getExtendedFingers(hand) == 2){
             var swipe = false;
@@ -34,7 +58,6 @@ var controller = Leap.loop({ enableGestures : true, optimizeHMD : true }, functi
               if (extendedFingers.indexOf(0) != -1 && extendedFingers.indexOf(4) != -1){
                   element = false;
                   console.log("thumb-pinky");
-                  pwrite("Hello, how are you?");
               } else if (extendedFingers.indexOf(0) != -1 && extendedFingers.indexOf(1) != -1){
                   element = false;
                   console.log("thumb-index")
@@ -57,7 +80,6 @@ var controller = Leap.loop({ enableGestures : true, optimizeHMD : true }, functi
                 if (extendedFinger.type == 0){
                 element = false;
                 console.log("thumb");
-                pwrite("Sure!");
               } else if (extendedFinger.type == 1){
                 element = false;
                 // document.getElementById("send").click();
@@ -73,6 +95,7 @@ var controller = Leap.loop({ enableGestures : true, optimizeHMD : true }, functi
               } else if (extendedFinger.type == 4){
                 element = false;
                 console.log("pinky");
+                pwrite("Bye bye")
               }
             }
           } else if (getExtendedFingers(hand) == 0){
