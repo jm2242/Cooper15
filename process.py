@@ -13,7 +13,7 @@ import time
 import urllib2
 import urllib
 import xml.dom.minidom
-
+	
 class ProcessingSettings:
 	Language = "English"
 	OutputFormat = "txt"
@@ -71,6 +71,9 @@ class AbbyyOnlineSdk:
 		getResultUrl = self.ServerUrl + "getResult?" + getResultParams
 		request = urllib2.Request( getResultUrl, None, self.buildAuthInfo() )
 		fileResponse = self.getOpener().open( request ).read()
+		print "-----"
+		print outputPath
+		print "-----"
 		resultFile = open( outputPath, "wb" )
 		resultFile.write( fileResponse )
 
